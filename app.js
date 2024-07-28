@@ -11,6 +11,8 @@ app.get("/", function (req, res) {
   res.sendFile("index.html");
 });
 
-server.listen(8000, function () {
-  console.log("server On 8000 port");
+const PORT = process.env.PORT || 8000;
+server.listen(PORT, function () {
+  console.log(`server On ${PORT} port`);
 });
+
