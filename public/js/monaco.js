@@ -153,7 +153,7 @@ require(["vs/editor/editor.main"], function () {
   });
   //Monaco Event
   editor.onDidChangeModelContent(function (e) {
-    if (issocket == false) {
+    if (!issocket) {
       socket.emit("key", e);
     } else issocket = false;
   });
@@ -161,27 +161,25 @@ require(["vs/editor/editor.main"], function () {
     socket.emit("selection", e);
   });
 
-  //Connect Socket
-  var socket = io("/main");
-
   socket.on("connected", function (data) {
+    console.log("Connected user:", data.user);
     users[data.user] = data.color;
     insertCSS(data.user, data.color);
     insertWidget(data);
     decorations[data.user] = [];
-    if (isadmin === true) {
+    if (isadmin) {
       editor.updateOptions({ readOnly: false });
       socket.emit("filedata", editor.getValue());
     }
   });
   socket.on("userdata", function (data) {
-    if (data.length == 1) isadmin = true;
-    for (var i of data) {
-      users[i.user] = i.color;
-      insertCSS(i.user, i.color);
-      insertWidget(i);
-      decorations[i.user] = [];
-    }
+    if (data.length === 1) isadmin = true;
+    data.forEach((user) => {
+      users[user.user] = user.color;
+      insertCSS(user.user, user.color);
+      insertWidget(user);
+      decorations[user.user] = [];
+    });
   });
   socket.on("resetdata", function (data) {
     issocket = true;
