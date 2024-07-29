@@ -13,9 +13,10 @@ module.exports = function (io, nsp) {
 
     conId++; //UserId increment
     console.log("[Socket.IO] [" + nsp + "] : Connect " + socket.id); //print connect
-    if (server.sockets.length == 1) {
+    if (Object.keys(server.sockets.connected).length === 1) {
       socket.emit("admin"); //alert Admin
       socket.admin = true;
+      users[socket.id].admin = true;
       // import file data from database
       // socket.emit('resetdata', data)
     } else socket.emit("userdata", Object.values(users)); //send Connected User data
