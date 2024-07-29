@@ -148,7 +148,7 @@ require(["vs/editor/editor.main"], function () {
     value: htmlCode,
     language: "javascript",
     fontSize: 15,
-    readOnly: true,
+    readOnly: false,
     fontFamily: "Nanum Gothic Coding",
   });
   //Monaco Event
